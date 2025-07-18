@@ -1,18 +1,18 @@
-import { ReactNode } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ReactNode } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { useLocation } from "react-router-dom"
 
 interface MetricCardProps {
-  title: string;
-  value: string | number;
-  icon: ReactNode;
+  title: string
+  value: ReactNode  
+  icon: ReactNode
   change?: {
-    value: number;
-    type: "increase" | "decrease";
-  };
-  className?: string;
-  style?: React.CSSProperties;
+    value: number
+    type: "increase" | "decrease"
+  }
+  className?: string
+  style?: React.CSSProperties
 }
 
 export const MetricCard = ({
@@ -23,7 +23,7 @@ export const MetricCard = ({
   className,
   style,
 }: MetricCardProps) => {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <Card
@@ -58,5 +58,5 @@ export const MetricCard = ({
         )}
       </CardContent>
     </Card>
-  );
-};
+  )
+}

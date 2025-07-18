@@ -3,7 +3,8 @@ import { StatsGrid } from "@/components/Dashboard/StatsGrid";
 import { RecentActivity } from "@/components/Dashboard/RecentActivity";
 import { DonationChart } from "@/components/Dashboard/DonationChart";
 
-const user = "Test";
+const user = "Nayla";
+
 const Dashboard = () => {
   return (
     <div>
@@ -16,7 +17,7 @@ const Dashboard = () => {
                 Dashboard Overview
               </h1>
               <p className="text-muted-foreground">
-                Welcome back {user} ! Check Qurbani App stats Overview !
+                Welcome back <span className="italic">{user}</span> ! Check Qurbani App stats Overview !
               </p>
             </div>
 
