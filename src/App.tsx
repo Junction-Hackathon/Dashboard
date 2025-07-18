@@ -11,11 +11,18 @@ import Skins from "./pages/Skins";
 import Reports from "./pages/Reports";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
+import background from "../public/assets/BG.png";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+        <img
+            className="absolute top-0 left-0 w-full h-full object-cover z-2 opacity-20 pointer-events-none"
+            src={background}
+            alt="Background"
+          />
+          <div className="absolute top-0 left-0 w-full h-full z-2 bg-gradient-to-b from-transparent to-white to-90% pointer-events-none" />
     <div className="relative z-200">
       <TooltipProvider>
         <Toaster />

@@ -1,7 +1,36 @@
-import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Download, FileText, Calendar, TrendingUp } from "lucide-react";
+import { DashboardLayout } from "@/components/Layout/DashboardLayout"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Download, FileText, Calendar, TrendingUp } from "lucide-react"
+import jsPDF from "jspdf"
+
+const dummyData = [
+  { name: "Ahmad Al-Rashid", donation: "$150", region: "Region A", date: "2024-01-15" },
+  { name: "Fatima Al-Zahra", donation: "$150", region: "Region B", date: "2024-01-15" },
+  { name: "Omar Al-Khattab", donation: "$150", region: "Region A", date: "2024-01-14" },
+]
+
+const generateCSV = () => {
+  const header = "Name,Donation,Region,Date"
+  const rows = dummyData.map(d => `${d.name},${d.donation},${d.region},${d.date}`).join("\n")
+  const csvContent = `${header}\n${rows}`
+  const blob = new Blob([csvContent], { type: "text/csv" })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement("a")
+  link.href = url
+  link.download = "report.csv"
+  link.click()
+}
+
+const generatePDF = () => {
+  const doc = new jsPDF()
+  doc.setFontSize(14)
+  doc.text("Donation Report", 20, 20)
+  dummyData.forEach((d, i) => {
+    doc.text(`${i + 1}. ${d.name} - ${d.donation} - ${d.region} - ${d.date}`, 20, 40 + i * 10)
+  })
+  doc.save("report.pdf")
+}
 
 const Reports = () => {
   return (
@@ -10,11 +39,9 @@ const Reports = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Reports & Analytics</h1>
-            <p className="text-muted-foreground">
-              Generate detailed reports and export data
-            </p>
+            <p className="text-muted-foreground">Generate detailed reports and export data</p>
           </div>
-          <Button className="bg-gradient-primary hover:bg-primary/90">
+          <Button className="bg-gradient-primary hover:bg-primary/90" onClick={generateCSV}>
             <Download className="w-4 h-4 mr-2" />
             Export All Data
           </Button>
@@ -33,11 +60,11 @@ const Reports = () => {
                 Comprehensive donation statistics by region, date, and status
               </p>
               <div className="space-y-2">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={generatePDF}>
                   <FileText className="w-4 h-4 mr-2" />
                   Generate PDF
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={generateCSV}>
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
                 </Button>
@@ -57,11 +84,11 @@ const Reports = () => {
                 Monthly performance metrics and trends
               </p>
               <div className="space-y-2">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={generatePDF}>
                   <FileText className="w-4 h-4 mr-2" />
                   Generate PDF
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={generateCSV}>
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
                 </Button>
@@ -81,11 +108,11 @@ const Reports = () => {
                 Individual worker statistics and performance metrics
               </p>
               <div className="space-y-2">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={generatePDF}>
                   <FileText className="w-4 h-4 mr-2" />
                   Generate PDF
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={generateCSV}>
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
                 </Button>
@@ -95,7 +122,7 @@ const Reports = () => {
         </div>
       </div>
     </DashboardLayout>
-  );
-};
+  )
+}
 
-export default Reports;
+export default Reports
