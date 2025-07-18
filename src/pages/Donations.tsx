@@ -1,7 +1,15 @@
-import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { DashboardLayout } from "@/components/Layout/DashboardLayout"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Table,
   TableBody,
@@ -9,15 +17,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Eye, Edit, UserPlus, CheckCircle } from "lucide-react";
+} from "@/components/ui/table"
+import { Trash2, Edit, Check } from "lucide-react"
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
-const donations = [
+const initialDonations = [
   {
     id: "D-001",
     donorName: "Ahmad Al-Rashid",
@@ -40,59 +50,67 @@ const donations = [
     assignedWorker: "Unassigned",
     region: "Region B",
   },
-  {
-    id: "D-003",
-    donorName: "Omar Al-Khattab",
-    sheepId: "S-1249",
-    amount: "$150",
-    date: "2024-01-14",
-    videoStatus: "verified",
-    deliveryStatus: "completed",
-    assignedWorker: "Ali Al-Mansouri",
-    region: "Region A",
-  },
-  {
-    id: "D-004",
-    donorName: "Aisha Al-Siddiq",
-    sheepId: "S-1250",
-    amount: "$150",
-    date: "2024-01-14",
-    videoStatus: "rejected",
-    deliveryStatus: "not_started",
-    assignedWorker: "Unassigned",
-    region: "Region C",
-  },
-];
+]
 
 const getStatusColor = (status: string) => {
   switch (status) {
     case "verified":
     case "completed":
-      return "bg-green-100 text-green-800 border-green-200";
+      return "bg-green-100 text-green-800 border-green-200"
     case "pending":
     case "not_started":
-      return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      return "bg-yellow-100 text-yellow-800 border-yellow-200"
     case "rejected":
-      return "bg-red-100 text-red-800 border-red-200";
+      return "bg-red-100 text-red-800 border-red-200"
     default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
+      return "bg-gray-100 text-gray-800 border-gray-200"
   }
-};
+}
 
-const Donations = () => {
+const videoStatuses = ["verified", "pending", "rejected"]
+const deliveryStatuses = ["completed", "pending", "not_started"]
+
+export default function Donations() {
+  const [donations, setDonations] = useState(initialDonations)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
+  const [editedFields, setEditedFields] = useState<Record<string, string>>({})
+
+  const startEdit = (donation: any) => {
+    setEditingId(donation.id)
+    setEditedFields({ ...donation })
+  }
+
+  const saveEdit = (id: string) => {
+    setDonations((prev) =>
+      prev.map((donation) =>
+        donation.id === id ? { ...donation, ...editedFields } : donation
+      )
+    )
+    setEditingId(null)
+    setEditedFields({})
+  }
+
+  const handleChange = (field: string, value: string) => {
+    setEditedFields((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleDelete = (id: string) => {
+    setDonations((prev) => prev.filter((d) => d.id !== id))
+    setConfirmDelete(null)
+  }
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Donations</h1>
-            <p className="text-muted-foreground">
-              Check all sheep donations and their status
-            </p>
+            <h1 className="text-3xl font-bold">Donations</h1>
+            <p className="text-muted-foreground">Check all sheep donations and their status</p>
           </div>
         </div>
 
-        <Card className="shadow-card">
+        <Card>
           <CardHeader>
             <CardTitle>All Donations</CardTitle>
           </CardHeader>
@@ -113,62 +131,146 @@ const Donations = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {donations.map((donation) => (
-                    <TableRow key={donation.id}>
-                      <TableCell className="font-medium">
-                        {donation.donorName}
-                      </TableCell>
-                      <TableCell className="font-mono">
-                        {donation.sheepId}
-                      </TableCell>
-                      <TableCell className="font-semibold text-primary">
-                        {donation.amount}
-                      </TableCell>
-                      <TableCell>{donation.date}</TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="secondary"
-                          className={getStatusColor(donation.videoStatus)}
-                        >
-                          {donation.videoStatus}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="secondary"
-                          className={getStatusColor(donation.deliveryStatus)}
-                        >
-                          {donation.deliveryStatus}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{donation.assignedWorker}</TableCell>
-                      <TableCell>{donation.region}</TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">
-                            <Eye className="w-4 h-4" />
+                  {donations.map((donation) => {
+                    const isEditing = editingId === donation.id
+                    return (
+                      <TableRow key={donation.id}>
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={editedFields.donorName}
+                              onChange={(e) => handleChange("donorName", e.target.value)}
+                            />
+                          ) : (
+                            donation.donorName
+                          )}
+                        </TableCell>
+                        <TableCell>{donation.sheepId}</TableCell>
+                        <TableCell>{donation.amount}</TableCell>
+                        <TableCell>{donation.date}</TableCell>
+
+                        <TableCell>
+                          {isEditing ? (
+                            <Select
+                              value={editedFields.videoStatus}
+                              onValueChange={(val) => handleChange("videoStatus", val)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {videoStatuses.map((status) => (
+                                  <SelectItem key={status} value={status}>
+                                    {status}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <Badge className={getStatusColor(donation.videoStatus)}>
+                              {donation.videoStatus}
+                            </Badge>
+                          )}
+                        </TableCell>
+
+                        <TableCell>
+                          {isEditing ? (
+                            <Select
+                              value={editedFields.deliveryStatus}
+                              onValueChange={(val) => handleChange("deliveryStatus", val)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select delivery status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {deliveryStatuses.map((status) => (
+                                  <SelectItem key={status} value={status}>
+                                    {status}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <Badge className={getStatusColor(donation.deliveryStatus)}>
+                              {donation.deliveryStatus}
+                            </Badge>
+                          )}
+                        </TableCell>
+
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={editedFields.assignedWorker}
+                              onChange={(e) => handleChange("assignedWorker", e.target.value)}
+                            />
+                          ) : (
+                            donation.assignedWorker
+                          )}
+                        </TableCell>
+
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={editedFields.region}
+                              onChange={(e) => handleChange("region", e.target.value)}
+                            />
+                          ) : (
+                            donation.region
+                          )}
+                        </TableCell>
+
+                        <TableCell className="flex space-x-2">
+                          {isEditing ? (
+                            <Button size="sm" onClick={() => saveEdit(donation.id)}>
+                              <Check className="w-4 h-4" />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => startEdit(donation)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          )}
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => setConfirmDelete(donation.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            <UserPlus className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            <CheckCircle className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             </div>
           </CardContent>
         </Card>
       </div>
-    </DashboardLayout>
-  );
-};
 
-export default Donations;
+      {/* Confirmation Dialog */}
+      <Dialog open={!!confirmDelete} onOpenChange={() => setConfirmDelete(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+          </DialogHeader>
+          <p>This donation will be permanently deleted. This action cannot be undone.</p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmDelete(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => confirmDelete && handleDelete(confirmDelete)}
+            >
+              Confirm Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </DashboardLayout>
+  )
+}
