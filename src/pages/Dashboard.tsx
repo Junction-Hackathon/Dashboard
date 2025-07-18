@@ -21,12 +21,13 @@ const Dashboard = () => {
               </p>
             </div>
 
-            <StatsGrid />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <DonationChart />
               <RecentActivity />
             </div>
+              <StatsGrid />
+
           </div>
         </DashboardLayout>
       </div>
