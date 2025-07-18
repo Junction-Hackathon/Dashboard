@@ -1,51 +1,49 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart } from "@mui/x-charts/LineChart";
 
 const data = [
-  { month: 'Jan', donations: 65 },
-  { month: 'Feb', donations: 89 },
-  { month: 'Mar', donations: 123 },
-  { month: 'Apr', donations: 156 },
-  { month: 'May', donations: 178 },
-  { month: 'Jun', donations: 198 },
-  { month: 'Jul', donations: 234 },
-  { month: 'Aug', donations: 267 },
-  { month: 'Sep', donations: 298 },
-  { month: 'Oct', donations: 321 },
-  { month: 'Nov', donations: 356 },
-  { month: 'Dec', donations: 389 }
+  { month: "Jan", donations: 65 },
+  { month: "Feb", donations: 89 },
+  { month: "Mar", donations: 123 },
+  { month: "Apr", donations: 156 },
+  { month: "May", donations: 178 },
+  { month: "Jun", donations: 198 },
+  { month: "Jul", donations: 234 },
+  { month: "Aug", donations: 267 },
+  { month: "Sep", donations: 298 },
+  { month: "Oct", donations: 321 },
+  { month: "Nov", donations: 356 },
+  { month: "Dec", donations: 389 },
 ];
 
+const months = data.map((d) => d.month);
+const donations = data.map((d) => d.donations);
+
 export const DonationChart = () => {
-  const maxDonations = Math.max(...data.map(d => d.donations));
-  
+  const maxDonations = Math.max(...data.map((d) => d.donations));
+
   return (
-    <Card className="shadow-card">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-foreground">Donations Over Time</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {data.map((item, index) => (
-            <div key={item.month} className="flex items-center space-x-4">
-              <div className="w-8 text-sm font-medium text-muted-foreground">
-                {item.month}
-              </div>
-              <div className="flex-1 bg-secondary rounded-full h-6 relative overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-primary rounded-full transition-all duration-700 ease-out"
-                  style={{ 
-                    width: `${(item.donations / maxDonations) * 100}%`,
-                    animationDelay: `${index * 0.1}s`
-                  }}
-                />
-              </div>
-              <div className="w-12 text-sm font-semibold text-foreground text-right">
-                {item.donations}
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="">
+      <Card className="shadow-card  rounded-3xl">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-foreground">
+            Donations Over Time Graph
+          </CardTitle>
+        </CardHeader>
+        <LineChart
+          className="bg-white shadow-card"
+          xAxis={[{ scaleType: "band", data: months }]}
+          series={[
+            {
+              data: donations,
+              area: true,
+              label: "Donations",
+              color: "#4ade80",
+            },
+          ]}
+          height={300}
+        />
+      </Card>
+    </div>
   );
 };

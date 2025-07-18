@@ -2,7 +2,14 @@ import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Users, MapPin, Star, Plus, Edit, Eye } from "lucide-react";
 
 const recipients = [
@@ -17,7 +24,7 @@ const recipients = [
     contactPerson: "Um Ahmad",
     phone: "+966 50 111 2233",
     address: "123 Al-Noor Street, District 1",
-    notes: "Widow with 5 children"
+    notes: "Widow with 5 children",
   },
   {
     id: "R-002",
@@ -30,7 +37,7 @@ const recipients = [
     contactPerson: "Um Ahmad",
     phone: "+966 50 222 3344",
     address: "456 Al-Rahma Avenue, District 2",
-    notes: "Single mother with 3 children"
+    notes: "Single mother with 3 children",
   },
   {
     id: "R-003",
@@ -43,7 +50,7 @@ const recipients = [
     contactPerson: "Abu Omar",
     phone: "+966 50 333 4455",
     address: "789 Al-Salam Road, District 3",
-    notes: "Large family, father unemployed"
+    notes: "Large family, father unemployed",
   },
   {
     id: "R-004",
@@ -56,7 +63,7 @@ const recipients = [
     contactPerson: "Abu Hassan",
     phone: "+966 50 444 5566",
     address: "321 Al-Huda Street, District 4",
-    notes: "Elderly couple, limited mobility"
+    notes: "Elderly couple, limited mobility",
   },
   {
     id: "R-005",
@@ -69,8 +76,8 @@ const recipients = [
     contactPerson: "Um Khalid",
     phone: "+966 50 555 6677",
     address: "654 Al-Baraka Street, District 5",
-    notes: "Recently registered"
-  }
+    notes: "Recently registered",
+  },
 ];
 
 const getPriorityColor = (priority: string) => {
@@ -97,10 +104,6 @@ const Recipients = () => {
               Manage families and individuals in need
             </p>
           </div>
-          <Button className="bg-gradient-primary hover:bg-primary/90">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Recipient
-          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -108,7 +111,9 @@ const Recipients = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Recipients</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Total Recipients
+                  </p>
                   <p className="text-2xl font-bold text-primary">127</p>
                 </div>
                 <Users className="w-8 h-8 text-primary" />
@@ -119,7 +124,9 @@ const Recipients = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">High Priority</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    High Priority
+                  </p>
                   <p className="text-2xl font-bold text-red-600">23</p>
                 </div>
                 <Star className="w-8 h-8 text-red-600" />
@@ -130,7 +137,9 @@ const Recipients = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">This Month</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    This Month
+                  </p>
                   <p className="text-2xl font-bold text-green-600">45</p>
                 </div>
                 <MapPin className="w-8 h-8 text-green-600" />
@@ -141,7 +150,9 @@ const Recipients = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Avg Household</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Avg Household
+                  </p>
                   <p className="text-2xl font-bold text-blue-600">5.2</p>
                 </div>
                 <Users className="w-8 h-8 text-blue-600" />
@@ -172,7 +183,9 @@ const Recipients = () => {
                 <TableBody>
                   {recipients.map((recipient) => (
                     <TableRow key={recipient.id}>
-                      <TableCell className="font-medium">{recipient.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {recipient.name}
+                      </TableCell>
                       <TableCell>{recipient.region}</TableCell>
                       <TableCell>
                         <div className="flex items-center">
@@ -181,16 +194,25 @@ const Recipients = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className={getPriorityColor(recipient.priority)}>
+                        <Badge
+                          variant="secondary"
+                          className={getPriorityColor(recipient.priority)}
+                        >
                           {recipient.priority}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-center font-semibold">{recipient.donationsReceived}</TableCell>
+                      <TableCell className="text-center font-semibold">
+                        {recipient.donationsReceived}
+                      </TableCell>
                       <TableCell>{recipient.lastDonation}</TableCell>
                       <TableCell>
                         <div className="text-sm">
-                          <p className="font-medium">{recipient.contactPerson}</p>
-                          <p className="text-muted-foreground">{recipient.phone}</p>
+                          <p className="font-medium">
+                            {recipient.contactPerson}
+                          </p>
+                          <p className="text-muted-foreground">
+                            {recipient.phone}
+                          </p>
                         </div>
                       </TableCell>
                       <TableCell>

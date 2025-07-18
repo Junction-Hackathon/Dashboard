@@ -5,40 +5,43 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Donations from "./pages/Donations";
-import Videos from "./pages/Videos";
-import Deliveries from "./pages/Deliveries";
 import Workers from "./pages/Workers";
 import Recipients from "./pages/Recipients";
 import Skins from "./pages/Skins";
 import Reports from "./pages/Reports";
 import Feedback from "./pages/Feedback";
-import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import background from "./../public/assets/BG.png";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/donations" element={<Donations />} />
-          <Route path="/videos" element={<Videos />} />
-          <Route path="/deliveries" element={<Deliveries />} />
-          <Route path="/workers" element={<Workers />} />
-          <Route path="/recipients" element={<Recipients />} />
-          <Route path="/skins" element={<Skins />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="/settings" element={<Settings />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <img
+      className="absolute top-0 left-0 w-full h-full object-cover z-1 opacity-20 pointer-events-none"
+      src={background}
+      alt="Background"
+    />
+    <div className="absolute z-0 top-0 left-0 w-full h-full z-0 bg-gradient-to-b from-transparent to-white to-90% pointer-events-none" />
+
+    <div className="relative z-200">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/donations" element={<Donations />} />
+            <Route path="/workers" element={<Workers />} />
+            <Route path="/recipients" element={<Recipients />} />
+            <Route path="/skins" element={<Skins />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/feedback" element={<Feedback />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </div>
   </QueryClientProvider>
 );
 

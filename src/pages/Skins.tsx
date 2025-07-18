@@ -2,7 +2,14 @@ import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Package, Building, CheckCircle, Clock, Plus } from "lucide-react";
 
 const skins = [
@@ -14,7 +21,7 @@ const skins = [
     status: "processed",
     charity: "Al-Khair Foundation",
     impact: "40 school bags created",
-    worker: "Mohammed Hassan"
+    worker: "Mohammed Hassan",
   },
   {
     id: "SK-002",
@@ -24,7 +31,7 @@ const skins = [
     status: "collected",
     charity: "Pending Assignment",
     impact: "Pending",
-    worker: "Ali Al-Mansouri"
+    worker: "Ali Al-Mansouri",
   },
   {
     id: "SK-003",
@@ -34,7 +41,7 @@ const skins = [
     status: "used",
     charity: "Hope Children Center",
     impact: "35 shoe pairs made",
-    worker: "Yusuf Al-Sharif"
+    worker: "Yusuf Al-Sharif",
   },
   {
     id: "SK-004",
@@ -44,7 +51,7 @@ const skins = [
     status: "collected",
     charity: "Pending Assignment",
     impact: "Pending",
-    worker: "Hassan Al-Bakri"
+    worker: "Hassan Al-Bakri",
   },
   {
     id: "SK-005",
@@ -54,8 +61,8 @@ const skins = [
     status: "processed",
     charity: "Women's Support Center",
     impact: "25 leather goods",
-    worker: "Omar Al-Qureshi"
-  }
+    worker: "Omar Al-Qureshi",
+  },
 ];
 
 const getStatusColor = (status: string) => {
@@ -77,15 +84,13 @@ const Skins = () => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Skins & Secondary Donations</h1>
+            <h1 className="text-3xl font-bold text-foreground">
+              Skins & Secondary Donations
+            </h1>
             <p className="text-muted-foreground">
               Track how animal skins are reused for charitable purposes
             </p>
           </div>
-          <Button className="bg-gradient-primary hover:bg-primary/90">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Skin Record
-          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -93,7 +98,9 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Skins</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Total Skins
+                  </p>
                   <p className="text-2xl font-bold text-primary">892</p>
                 </div>
                 <Package className="w-8 h-8 text-primary" />
@@ -104,7 +111,9 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Processed</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Processed
+                  </p>
                   <p className="text-2xl font-bold text-blue-600">567</p>
                 </div>
                 <CheckCircle className="w-8 h-8 text-blue-600" />
@@ -115,7 +124,9 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Pending</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Pending
+                  </p>
                   <p className="text-2xl font-bold text-yellow-600">123</p>
                 </div>
                 <Clock className="w-8 h-8 text-yellow-600" />
@@ -126,7 +137,9 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Partner Charities</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Partner Charities
+                  </p>
                   <p className="text-2xl font-bold text-green-600">12</p>
                 </div>
                 <Building className="w-8 h-8 text-green-600" />
@@ -158,16 +171,25 @@ const Skins = () => {
                   {skins.map((skin) => (
                     <TableRow key={skin.id}>
                       <TableCell className="font-mono">{skin.id}</TableCell>
-                      <TableCell className="font-mono">{skin.sheepId}</TableCell>
-                      <TableCell className="font-medium">{skin.donorName}</TableCell>
+                      <TableCell className="font-mono">
+                        {skin.sheepId}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {skin.donorName}
+                      </TableCell>
                       <TableCell>{skin.collectionDate}</TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className={getStatusColor(skin.status)}>
+                        <Badge
+                          variant="secondary"
+                          className={getStatusColor(skin.status)}
+                        >
                           {skin.status}
                         </Badge>
                       </TableCell>
                       <TableCell>{skin.charity}</TableCell>
-                      <TableCell className="text-green-600 font-medium">{skin.impact}</TableCell>
+                      <TableCell className="text-green-600 font-medium">
+                        {skin.impact}
+                      </TableCell>
                       <TableCell>{skin.worker}</TableCell>
                     </TableRow>
                   ))}

@@ -9,7 +9,7 @@ const recentActivities = [
     message: "Ahmad donated for sheep #S-1247",
     time: "2 minutes ago",
     status: "pending",
-    avatar: "AH"
+    avatar: "AH",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const recentActivities = [
     message: "Video verified for sheep #S-1246",
     time: "15 minutes ago",
     status: "approved",
-    avatar: "MK"
+    avatar: "MK",
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const recentActivities = [
     message: "Delivery completed to Al-Zahra family",
     time: "1 hour ago",
     status: "completed",
-    avatar: "FN"
+    avatar: "FN",
   },
   {
     id: 4,
@@ -33,16 +33,8 @@ const recentActivities = [
     message: "Skin donated to local charity",
     time: "2 hours ago",
     status: "completed",
-    avatar: "SK"
+    avatar: "SK",
   },
-  {
-    id: 5,
-    type: "worker",
-    message: "New worker assigned to region 3",
-    time: "3 hours ago",
-    status: "active",
-    avatar: "YS"
-  }
 ];
 
 const getStatusColor = (status: string) => {
@@ -60,14 +52,19 @@ const getStatusColor = (status: string) => {
 
 export const RecentActivity = () => {
   return (
-    <Card className="shadow-card">
+    <Card className="shadow-card  rounded-3xl">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-foreground">Recent Activity</CardTitle>
+        <CardTitle className="text-lg font-semibold text-foreground">
+          Recent Activity
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {recentActivities.map((activity) => (
-            <div key={activity.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors">
+            <div
+              key={activity.id}
+              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+            >
               <Avatar className="w-10 h-10">
                 <AvatarImage src="" />
                 <AvatarFallback className="bg-gradient-primary text-primary-foreground text-sm">
@@ -80,7 +77,10 @@ export const RecentActivity = () => {
                 </p>
                 <p className="text-xs text-muted-foreground">{activity.time}</p>
               </div>
-              <Badge variant="secondary" className={getStatusColor(activity.status)}>
+              <Badge
+                variant="secondary"
+                className={getStatusColor(activity.status)}
+              >
                 {activity.status}
               </Badge>
             </div>

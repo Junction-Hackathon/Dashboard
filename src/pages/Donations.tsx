@@ -2,8 +2,20 @@ import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Eye, Edit, UserPlus, CheckCircle } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const donations = [
   {
@@ -15,10 +27,10 @@ const donations = [
     videoStatus: "verified",
     deliveryStatus: "pending",
     assignedWorker: "Mohammed Hassan",
-    region: "Region A"
+    region: "Region A",
   },
   {
-    id: "D-002", 
+    id: "D-002",
     donorName: "Fatima Al-Zahra",
     sheepId: "S-1248",
     amount: "$150",
@@ -26,18 +38,18 @@ const donations = [
     videoStatus: "pending",
     deliveryStatus: "not_started",
     assignedWorker: "Unassigned",
-    region: "Region B"
+    region: "Region B",
   },
   {
     id: "D-003",
     donorName: "Omar Al-Khattab",
-    sheepId: "S-1249", 
+    sheepId: "S-1249",
     amount: "$150",
     date: "2024-01-14",
     videoStatus: "verified",
     deliveryStatus: "completed",
     assignedWorker: "Ali Al-Mansouri",
-    region: "Region A"
+    region: "Region A",
   },
   {
     id: "D-004",
@@ -48,8 +60,8 @@ const donations = [
     videoStatus: "rejected",
     deliveryStatus: "not_started",
     assignedWorker: "Unassigned",
-    region: "Region C"
-  }
+    region: "Region C",
+  },
 ];
 
 const getStatusColor = (status: string) => {
@@ -75,12 +87,9 @@ const Donations = () => {
           <div>
             <h1 className="text-3xl font-bold text-foreground">Donations</h1>
             <p className="text-muted-foreground">
-              Manage all sheep donations and their status
+              Check all sheep donations and their status
             </p>
           </div>
-          <Button className="bg-gradient-primary hover:bg-primary/90">
-            Add New Donation
-          </Button>
         </div>
 
         <Card className="shadow-card">
@@ -106,17 +115,29 @@ const Donations = () => {
                 <TableBody>
                   {donations.map((donation) => (
                     <TableRow key={donation.id}>
-                      <TableCell className="font-medium">{donation.donorName}</TableCell>
-                      <TableCell className="font-mono">{donation.sheepId}</TableCell>
-                      <TableCell className="font-semibold text-primary">{donation.amount}</TableCell>
+                      <TableCell className="font-medium">
+                        {donation.donorName}
+                      </TableCell>
+                      <TableCell className="font-mono">
+                        {donation.sheepId}
+                      </TableCell>
+                      <TableCell className="font-semibold text-primary">
+                        {donation.amount}
+                      </TableCell>
                       <TableCell>{donation.date}</TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className={getStatusColor(donation.videoStatus)}>
+                        <Badge
+                          variant="secondary"
+                          className={getStatusColor(donation.videoStatus)}
+                        >
                           {donation.videoStatus}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className={getStatusColor(donation.deliveryStatus)}>
+                        <Badge
+                          variant="secondary"
+                          className={getStatusColor(donation.deliveryStatus)}
+                        >
                           {donation.deliveryStatus}
                         </Badge>
                       </TableCell>

@@ -1,18 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  DollarSign, 
-  Video, 
-  Truck, 
-  Users, 
+import {
+  LayoutDashboard,
+  DollarSign,
+  Video,
+  Users,
   UserCheck,
   Shirt,
   BarChart3,
   MessageSquare,
   Settings,
-  Heart
+  Heart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import background from "../../../public/assets/mosaics.png";
+import { GiSheep } from "react-icons/gi";
 
 const navigationItems = [
   {
@@ -24,16 +25,6 @@ const navigationItems = [
     name: "Donations",
     href: "/donations",
     icon: DollarSign,
-  },
-  {
-    name: "Video Verifications",
-    href: "/videos",
-    icon: Video,
-  },
-  {
-    name: "Deliveries",
-    href: "/deliveries",
-    icon: Truck,
   },
   {
     name: "Workers",
@@ -60,11 +51,6 @@ const navigationItems = [
     href: "/feedback",
     icon: MessageSquare,
   },
-  {
-    name: "Settings",
-    href: "/settings",
-    icon: Settings,
-  },
 ];
 
 export const Navigation = () => {
@@ -72,17 +58,17 @@ export const Navigation = () => {
 
   return (
     <nav className="fixed left-0 top-0 z-50 h-screen w-64 bg-card shadow-elegant border-r border-border">
-      <div className="p-6">
+      <div className="p-6 relative z-50">
         <div className="flex items-center space-x-3 mb-8">
           <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow">
-            <Heart className="w-6 h-6 text-primary-foreground" />
+            <GiSheep className="w-6 h-6 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-foreground">Sheep Donations</h1>
+            <h1 className="text-lg font-bold text-foreground">Qurbani App</h1>
             <p className="text-sm text-muted-foreground">Dashboard</p>
           </div>
         </div>
-        
+
         <ul className="space-y-2">
           {navigationItems.map((item) => {
             const isActive = location.pathname === item.href;
@@ -97,13 +83,13 @@ export const Navigation = () => {
                       : "text-foreground hover:bg-secondary hover:text-secondary-foreground"
                   )}
                 >
-                  <item.icon 
+                  <item.icon
                     className={cn(
                       "w-5 h-5 transition-all duration-200",
-                      isActive 
-                        ? "text-primary-foreground" 
+                      isActive
+                        ? "text-primary-foreground"
                         : "text-muted-foreground group-hover:text-foreground"
-                    )} 
+                    )}
                   />
                   <span>{item.name}</span>
                 </Link>
@@ -112,6 +98,12 @@ export const Navigation = () => {
           })}
         </ul>
       </div>
+      <img
+        className="absolute top-0 left-0 w-full h-full object-cover z-1 opacity-20 pointer-events-none"
+        src={background}
+        alt="Background"
+      />
+      <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-b from-transparent to-white to-90% pointer-events-none" />
     </nav>
   );
 };
