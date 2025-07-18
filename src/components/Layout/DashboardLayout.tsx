@@ -7,7 +7,7 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <div className="min-h-screen bg-gradient-subtle relative">
+    <div className="min-h-screen bg-transparent relative">
       <div className="flex">
         <Navigation />
         <main className="flex-1 ml-64 p-8">{children}</main>

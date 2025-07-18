@@ -2,80 +2,81 @@ import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Phone, MapPin, Star, Plus, Edit } from "lucide-react";
-
+import { Phone, Star, Plus, Edit } from "lucide-react";
+import { MdEmail } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { z } from "zod";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
-const workers = [
+const _workers = [
   {
     id: "W-001",
     name: "Mohammed Hassan",
     phone: "+966 50 123 4567",
     status: "active",
-    deliveries: 23,
     videos: 25,
     joinDate: "2023-06-15",
     avatar: "MH",
+    email: "mohammed.hassan@example.com",
   },
   {
     id: "W-002",
     name: "Ali Al-Mansouri",
     phone: "+966 50 234 5678",
     status: "active",
-    deliveries: 31,
     videos: 33,
     joinDate: "2023-05-20",
     avatar: "AM",
+    email: "ali.almansouri@example.com",
   },
   {
     id: "W-003",
     name: "Yusuf Al-Sharif",
     phone: "+966 50 345 6789",
     status: "inactive",
-    deliveries: 15,
     videos: 18,
     joinDate: "2023-08-10",
     avatar: "YS",
+    email: "yusuf.alsharif@example.com",
   },
   {
     id: "W-004",
     name: "Hassan Al-Bakri",
     phone: "+966 50 456 7890",
     status: "active",
-    deliveries: 28,
     videos: 30,
     joinDate: "2023-07-01",
     avatar: "HB",
+    email: "hassan.albakri@example.com",
   },
   {
     id: "W-005",
     name: "Omar Al-Qureshi",
     phone: "+966 50 567 8901",
     status: "active",
-    deliveries: 19,
     videos: 21,
     joinDate: "2023-09-05",
     avatar: "OQ",
+    email: "omar.alqureshi@example.com",
   },
   {
     id: "W-006",
     name: "Khalid Al-Najjar",
     phone: "+966 50 678 9012",
     status: "active",
-    deliveries: 22,
     videos: 24,
     joinDate: "2023-04-12",
     avatar: "KN",
+    email: "khalid.alnajjar@example.com",
   },
 ];
-
 const getStatusColor = (status: string) => {
   switch (status) {
     case "active":
@@ -86,8 +87,29 @@ const getStatusColor = (status: string) => {
       return "bg-gray-100 text-gray-800 border-gray-200";
   }
 };
+type WorkerT = (typeof _workers)[0];
+
+// export const validationSchema = z.object( {
+//   phone: z.string().
+// })
 
 const Workers = () => {
+  const [data, setData] = useState<WorkerT>({
+    phone: "",
+    id: "",
+    name: "",
+    avatar: "",
+    email: "",
+    status: "inactive",
+    joinDate: new Date().toString(),
+    videos: 0,
+  });
+  const [workers, SetWorkers] = useState<WorkerT[]>([..._workers]);
+
+  const addWorker = (worker: WorkerT) => {
+    SetWorkers((prev) => [...prev, worker]);
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -109,7 +131,7 @@ const Workers = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
-              <div className="grid gap-4">
+              <form className="grid gap-4">
                 <div className="space-y-2">
                   <h4 className="leading-none font-medium">Add a Worker</h4>
                   <p className="text-muted-foreground text-sm">
@@ -117,46 +139,37 @@ const Workers = () => {
                   </p>
                 </div>
                 <div className="grid gap-2">
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="width">Phone Number</Label>
-                    <Input
-                      id="width"
-                      defaultValue="100%"
-                      className="col-span-2 h-8"
-                    />
+                  <div className="flex flex-col items-start space-y-2">
+                    <Label htmlFor="width">Phone</Label>
+                    <Input id="width" className="col-span-2 h-8" />
                   </div>
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="maxWidth">Region</Label>
-                    <Input
-                      id="maxWidth"
-                      defaultValue="300px"
-                      className="col-span-2 h-8"
-                    />
+                  <div className="flex flex-col items-start space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input id="name" className="col-span-2 h-8" />
                   </div>
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="height">Height</Label>
-                    <Input
-                      id="height"
-                      defaultValue="25px"
-                      className="col-span-2 h-8"
-                    />
+                  <div className="flex flex-col items-start space-y-2">
+                    <Label htmlFor="name">Last Name</Label>
+                    <Input id="name" className="col-span-2 h-8" />
                   </div>
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="maxHeight">Max. height</Label>
-                    <Input
-                      id="maxHeight"
-                      defaultValue="none"
-                      className="col-span-2 h-8"
-                    />
+                  <div className="flex flex-col items-start space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" className="col-span-2 h-8" />
                   </div>
                 </div>
-              </div>
+                <Button
+                  onClick={() => addWorker()}
+                  className="bg-gradient-primary hover:bg-primary/90"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Submit
+                </Button>
+              </form>
             </PopoverContent>
           </Popover>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {workers.map((worker) => (
+          {_workers.map((worker) => (
             <Card
               key={worker.id}
               className="shadow-card hover:shadow-elegant transition-all duration-300"
@@ -193,8 +206,8 @@ const Workers = () => {
                   </div>
 
                   <div className="flex items-center space-x-2 text-sm">
-                    <MapPin className="w-4 h-4 text-muted-foreground" />
-                    {/* <span>{worker.region}</span> */}
+                    <MdEmail className="w-4 h-4 text-muted-foreground" />
+                    <span>{worker.email}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-4 py-3 border-t">
                     <div className="text-center">
