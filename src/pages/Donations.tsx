@@ -251,7 +251,6 @@ export default function Donations() {
         </Card>
       </div>
 
-      {/* Confirmation Dialog */}
       <Dialog open={!!confirmDelete} onOpenChange={() => setConfirmDelete(null)}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
