@@ -1,7 +1,21 @@
-import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { DashboardLayout } from "@/components/Layout/DashboardLayout"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   Table,
   TableBody,
@@ -9,159 +23,90 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Users, MapPin, Star, Plus, Edit, Eye } from "lucide-react";
+} from "@/components/ui/table"
+import { Trash2, Edit, Check } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
-const recipients = [
+const initialRecipients = [
   {
     id: "R-001",
-    name: "Al-Zahra Family",
-    region: "Region A - North",
-    householdSize: 6,
-    priority: "high",
-    donationsReceived: 3,
-    lastDonation: "2024-01-15",
-    contactPerson: "Um Ahmad",
-    phone: "+966 50 111 2233",
-    address: "123 Al-Noor Street, District 1",
-    notes: "Widow with 5 children",
+    name: "Ali Ben Youssef",
+    contact: "+213 123 456 789",
+    region: "Algiers",
+    assignedWorker: "Said Karim",
+    deliveryStatus: "pending",
+    date: "2024-01-17",
   },
   {
     id: "R-002",
-    name: "Widow Um Ahmad",
-    region: "Region B - East",
-    householdSize: 4,
-    priority: "high",
-    donationsReceived: 2,
-    lastDonation: "2024-01-12",
-    contactPerson: "Um Ahmad",
-    phone: "+966 50 222 3344",
-    address: "456 Al-Rahma Avenue, District 2",
-    notes: "Single mother with 3 children",
+    name: "Meriem Louisa",
+    contact: "+213 987 654 321",
+    region: "Oran",
+    assignedWorker: "Unassigned",
+    deliveryStatus: "not_started",
+    date: "2024-01-17",
   },
-  {
-    id: "R-003",
-    name: "Al-Khattab Family",
-    region: "Region A - North",
-    householdSize: 8,
-    priority: "medium",
-    donationsReceived: 4,
-    lastDonation: "2024-01-10",
-    contactPerson: "Abu Omar",
-    phone: "+966 50 333 4455",
-    address: "789 Al-Salam Road, District 3",
-    notes: "Large family, father unemployed",
-  },
-  {
-    id: "R-004",
-    name: "Elderly Couple",
-    region: "Region C - South",
-    householdSize: 2,
-    priority: "medium",
-    donationsReceived: 1,
-    lastDonation: "2024-01-08",
-    contactPerson: "Abu Hassan",
-    phone: "+966 50 444 5566",
-    address: "321 Al-Huda Street, District 4",
-    notes: "Elderly couple, limited mobility",
-  },
-  {
-    id: "R-005",
-    name: "Al-Mansouri Family",
-    region: "Region B - East",
-    householdSize: 5,
-    priority: "low",
-    donationsReceived: 2,
-    lastDonation: "2024-01-05",
-    contactPerson: "Um Khalid",
-    phone: "+966 50 555 6677",
-    address: "654 Al-Baraka Street, District 5",
-    notes: "Recently registered",
-  },
-];
+]
 
-const getPriorityColor = (priority: string) => {
-  switch (priority) {
-    case "high":
-      return "bg-red-100 text-red-800 border-red-200";
-    case "medium":
-      return "bg-yellow-100 text-yellow-800 border-yellow-200";
-    case "low":
-      return "bg-green-100 text-green-800 border-green-200";
+const deliveryStatuses = ["completed", "pending", "not_started"]
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "completed":
+      return "bg-green-100 text-green-800 border-green-200"
+    case "pending":
+    case "not_started":
+      return "bg-yellow-100 text-yellow-800 border-yellow-200"
     default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
+      return "bg-gray-100 text-gray-800 border-gray-200"
   }
-};
+}
 
-const Recipients = () => {
+export default function Recipients() {
+  const [recipients, setRecipients] = useState(initialRecipients)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
+  const [editedFields, setEditedFields] = useState<Record<string, string>>({})
+
+  const startEdit = (recipient: any) => {
+    setEditingId(recipient.id)
+    setEditedFields({ ...recipient })
+  }
+
+  const saveEdit = (id: string) => {
+    setRecipients((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, ...editedFields } : r))
+    )
+    setEditingId(null)
+    setEditedFields({})
+  }
+
+  const handleChange = (field: string, value: string) => {
+    setEditedFields((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleDelete = (id: string) => {
+    setRecipients((prev) => prev.filter((r) => r.id !== id))
+    setConfirmDelete(null)
+  }
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Recipients</h1>
-            <p className="text-muted-foreground">
-              Manage families and individuals in need
-            </p>
+            <h1 className="text-3xl font-bold">Recipients</h1>
+            <p className="text-muted-foreground">Manage all recipients of donations</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card className="shadow-card">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Total Recipients
-                  </p>
-                  <p className="text-2xl font-bold text-primary">127</p>
-                </div>
-                <Users className="w-8 h-8 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="shadow-card">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    High Priority
-                  </p>
-                  <p className="text-2xl font-bold text-red-600">23</p>
-                </div>
-                <Star className="w-8 h-8 text-red-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="shadow-card">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    This Month
-                  </p>
-                  <p className="text-2xl font-bold text-green-600">45</p>
-                </div>
-                <MapPin className="w-8 h-8 text-green-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="shadow-card">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Avg Household
-                  </p>
-                  <p className="text-2xl font-bold text-blue-600">5.2</p>
-                </div>
-                <Users className="w-8 h-8 text-blue-600" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="shadow-card">
+        <Card>
           <CardHeader>
             <CardTitle>All Recipients</CardTitle>
           </CardHeader>
@@ -171,70 +116,144 @@ const Recipients = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead>Region</TableHead>
-                    <TableHead>Household Size</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Donations Received</TableHead>
-                    <TableHead>Last Donation</TableHead>
                     <TableHead>Contact</TableHead>
+                    <TableHead>Region</TableHead>
+                    <TableHead>Assigned Worker</TableHead>
+                    <TableHead>Delivery Status</TableHead>
+                    <TableHead>Date</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {recipients.map((recipient) => (
-                    <TableRow key={recipient.id}>
-                      <TableCell className="font-medium">
-                        {recipient.name}
-                      </TableCell>
-                      <TableCell>{recipient.region}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center">
-                          <Users className="w-4 h-4 mr-1 text-muted-foreground" />
-                          {recipient.householdSize}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="secondary"
-                          className={getPriorityColor(recipient.priority)}
-                        >
-                          {recipient.priority}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-center font-semibold">
-                        {recipient.donationsReceived}
-                      </TableCell>
-                      <TableCell>{recipient.lastDonation}</TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          <p className="font-medium">
-                            {recipient.contactPerson}
-                          </p>
-                          <p className="text-muted-foreground">
-                            {recipient.phone}
-                          </p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">
-                            <Eye className="w-4 h-4" />
+                  {recipients.map((recipient) => {
+                    const isEditing = editingId === recipient.id
+                    return (
+                      <TableRow key={recipient.id}>
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={editedFields.name}
+                              onChange={(e) => handleChange("name", e.target.value)}
+                            />
+                          ) : (
+                            recipient.name
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={editedFields.contact}
+                              onChange={(e) => handleChange("contact", e.target.value)}
+                            />
+                          ) : (
+                            recipient.contact
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={editedFields.region}
+                              onChange={(e) => handleChange("region", e.target.value)}
+                            />
+                          ) : (
+                            recipient.region
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={editedFields.assignedWorker}
+                              onChange={(e) => handleChange("assignedWorker", e.target.value)}
+                            />
+                          ) : (
+                            recipient.assignedWorker
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {isEditing ? (
+                            <Select
+                              value={editedFields.deliveryStatus}
+                              onValueChange={(val) => handleChange("deliveryStatus", val)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {deliveryStatuses.map((status) => (
+                                  <SelectItem key={status} value={status}>
+                                    {status}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <Badge className={getStatusColor(recipient.deliveryStatus)}>
+                              {recipient.deliveryStatus}
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              type="date"
+                              value={editedFields.date}
+                              onChange={(e) => handleChange("date", e.target.value)}
+                            />
+                          ) : (
+                            recipient.date
+                          )}
+                        </TableCell>
+                        <TableCell className="flex space-x-2">
+                          {isEditing ? (
+                            <Button size="sm" onClick={() => saveEdit(recipient.id)}>
+                              <Check className="w-4 h-4" />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => startEdit(recipient)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          )}
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => setConfirmDelete(recipient.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             </div>
           </CardContent>
         </Card>
       </div>
-    </DashboardLayout>
-  );
-};
 
-export default Recipients;
+      <Dialog open={!!confirmDelete} onOpenChange={() => setConfirmDelete(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+          </DialogHeader>
+          <p>This recipient will be permanently deleted. This action cannot be undone.</p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmDelete(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => confirmDelete && handleDelete(confirmDelete)}
+            >
+              Confirm Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </DashboardLayout>
+  )
+}

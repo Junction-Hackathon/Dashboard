@@ -1,7 +1,8 @@
-import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { DashboardLayout } from "@/components/Layout/DashboardLayout"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
@@ -9,10 +10,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Package, Building, CheckCircle, Clock, Plus } from "lucide-react";
+} from "@/components/ui/table"
+import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Package, Building, CheckCircle, Clock } from "lucide-react"
 
-const skins = [
+const initialSkins = [
   {
     id: "SK-001",
     sheepId: "S-1247",
@@ -43,53 +47,59 @@ const skins = [
     impact: "35 shoe pairs made",
     worker: "Yusuf Al-Sharif",
   },
-  {
-    id: "SK-004",
-    sheepId: "S-1250",
-    donorName: "Aisha Al-Siddiq",
-    collectionDate: "2024-01-14",
-    status: "collected",
-    charity: "Pending Assignment",
-    impact: "Pending",
-    worker: "Hassan Al-Bakri",
-  },
-  {
-    id: "SK-005",
-    sheepId: "S-1251",
-    donorName: "Khalid Al-Mansouri",
-    collectionDate: "2024-01-13",
-    status: "processed",
-    charity: "Women's Support Center",
-    impact: "25 leather goods",
-    worker: "Omar Al-Qureshi",
-  },
-];
+]
 
 const getStatusColor = (status: string) => {
   switch (status) {
     case "used":
-      return "bg-green-100 text-green-800 border-green-200";
+      return "bg-green-100 text-green-800 border-green-200"
     case "processed":
-      return "bg-blue-100 text-blue-800 border-blue-200";
+      return "bg-blue-100 text-blue-800 border-blue-200"
     case "collected":
-      return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      return "bg-yellow-100 text-yellow-800 border-yellow-200"
     default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
+      return "bg-gray-100 text-gray-800 border-gray-200"
   }
-};
+}
 
 const Skins = () => {
+  const [skins, setSkins] = useState(initialSkins)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editData, setEditData] = useState<any>({})
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
+
+  const handleEditToggle = (id: string) => {
+    if (editingId === id) {
+      setSkins((prev) =>
+        prev.map((skin) =>
+          skin.id === id ? { ...skin, ...editData } : skin
+        )
+      )
+      setEditingId(null)
+    } else {
+      const skin = skins.find((s) => s.id === id)
+      setEditData({ ...skin })
+      setEditingId(id)
+    }
+  }
+
+  const handleChange = (field: string, value: string) => {
+    setEditData((prev: any) => ({ ...prev, [field]: value }))
+  }
+
+  const handleDelete = () => {
+    if (!confirmDeleteId) return
+    setSkins((prev) => prev.filter((skin) => skin.id !== confirmDeleteId))
+    setConfirmDeleteId(null)
+  }
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">
-              Skins & Secondary Donations
-            </h1>
-            <p className="text-muted-foreground">
-              Track how animal skins are reused for charitable purposes
-            </p>
+            <h1 className="text-3xl font-bold text-foreground">Skins & Secondary Donations</h1>
+            <p className="text-muted-foreground">Track how animal skins are reused for charitable purposes</p>
           </div>
         </div>
 
@@ -98,10 +108,8 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Total Skins
-                  </p>
-                  <p className="text-2xl font-bold text-primary">892</p>
+                  <p className="text-sm font-medium text-muted-foreground">Total Skins</p>
+                  <p className="text-2xl font-bold text-primary">{skins.length}</p>
                 </div>
                 <Package className="w-8 h-8 text-primary" />
               </div>
@@ -111,10 +119,10 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Processed
+                  <p className="text-sm font-medium text-muted-foreground">Processed</p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    {skins.filter((s) => s.status === "processed").length}
                   </p>
-                  <p className="text-2xl font-bold text-blue-600">567</p>
                 </div>
                 <CheckCircle className="w-8 h-8 text-blue-600" />
               </div>
@@ -124,10 +132,10 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Pending
+                  <p className="text-sm font-medium text-muted-foreground">Collected</p>
+                  <p className="text-2xl font-bold text-yellow-600">
+                    {skins.filter((s) => s.status === "collected").length}
                   </p>
-                  <p className="text-2xl font-bold text-yellow-600">123</p>
                 </div>
                 <Clock className="w-8 h-8 text-yellow-600" />
               </div>
@@ -137,10 +145,10 @@ const Skins = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Partner Charities
+                  <p className="text-sm font-medium text-muted-foreground">Used</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    {skins.filter((s) => s.status === "used").length}
                   </p>
-                  <p className="text-2xl font-bold text-green-600">12</p>
                 </div>
                 <Building className="w-8 h-8 text-green-600" />
               </div>
@@ -153,76 +161,112 @@ const Skins = () => {
             <CardTitle>Skin Tracking Records</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Skin ID</TableHead>
-                    <TableHead>Sheep ID</TableHead>
-                    <TableHead>Original Donor</TableHead>
-                    <TableHead>Collection Date</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Assigned Charity</TableHead>
-                    <TableHead>Impact</TableHead>
-                    <TableHead>Collected By</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {skins.map((skin) => (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Skin ID</TableHead>
+                  <TableHead>Sheep ID</TableHead>
+                  <TableHead>Donor</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Charity</TableHead>
+                  <TableHead>Impact</TableHead>
+                  <TableHead>Worker</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {skins.map((skin) => {
+                  const isEditing = editingId === skin.id
+                  return (
                     <TableRow key={skin.id}>
-                      <TableCell className="font-mono">{skin.id}</TableCell>
-                      <TableCell className="font-mono">
-                        {skin.sheepId}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {skin.donorName}
-                      </TableCell>
-                      <TableCell>{skin.collectionDate}</TableCell>
+                      <TableCell>{skin.id}</TableCell>
                       <TableCell>
-                        <Badge
-                          variant="secondary"
-                          className={getStatusColor(skin.status)}
-                        >
-                          {skin.status}
-                        </Badge>
+                        {isEditing ? (
+                          <Input value={editData.sheepId} onChange={(e) => handleChange("sheepId", e.target.value)} />
+                        ) : (
+                          skin.sheepId
+                        )}
                       </TableCell>
-                      <TableCell>{skin.charity}</TableCell>
-                      <TableCell className="text-green-600 font-medium">
-                        {skin.impact}
+                      <TableCell>
+                        {isEditing ? (
+                          <Input value={editData.donorName} onChange={(e) => handleChange("donorName", e.target.value)} />
+                        ) : (
+                          skin.donorName
+                        )}
                       </TableCell>
-                      <TableCell>{skin.worker}</TableCell>
+                      <TableCell>
+                        {isEditing ? (
+                          <Input type="date" value={editData.collectionDate} onChange={(e) => handleChange("collectionDate", e.target.value)} />
+                        ) : (
+                          skin.collectionDate
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {isEditing ? (
+                          <Select value={editData.status} onValueChange={(value) => handleChange("status", value)}>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="processed">Processed</SelectItem>
+                              <SelectItem value="collected">Collected</SelectItem>
+                              <SelectItem value="used">Used</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <Badge className={getStatusColor(skin.status)}>{skin.status}</Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {isEditing ? (
+                          <Input value={editData.charity} onChange={(e) => handleChange("charity", e.target.value)} />
+                        ) : (
+                          skin.charity
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {isEditing ? (
+                          <Input value={editData.impact} onChange={(e) => handleChange("impact", e.target.value)} />
+                        ) : (
+                          skin.impact
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {isEditing ? (
+                          <Input value={editData.worker} onChange={(e) => handleChange("worker", e.target.value)} />
+                        ) : (
+                          skin.worker
+                        )}
+                      </TableCell>
+                      <TableCell className="space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => handleEditToggle(skin.id)}>
+                          {isEditing ? "Save" : "Edit"}
+                        </Button>
+                        <Button variant="destructive" size="sm" onClick={() => setConfirmDeleteId(skin.id)}>
+                          Delete
+                        </Button>
+                      </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle>Impact Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
-                <p className="text-3xl font-bold text-green-600">1,200+</p>
-                <p className="text-sm text-green-700">Items Created</p>
-              </div>
-              <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
-                <p className="text-3xl font-bold text-blue-600">15</p>
-                <p className="text-sm text-blue-700">Partner Organizations</p>
-              </div>
-              <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
-                <p className="text-3xl font-bold text-purple-600">5,000+</p>
-                <p className="text-sm text-purple-700">People Helped</p>
-              </div>
-            </div>
+                  )
+                })}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>
-    </DashboardLayout>
-  );
-};
 
-export default Skins;
+      <Dialog open={!!confirmDeleteId} onOpenChange={() => setConfirmDeleteId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you sure you want to delete this skin record?</DialogTitle>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmDeleteId(null)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </DashboardLayout>
+  )
+}
+
+export default Skins
