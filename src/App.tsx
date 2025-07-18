@@ -12,6 +12,8 @@ import Reports from "./pages/Reports";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 import background from "../public/assets/BG.png";
+import Login from "./pages/auth/login"
+import Register from "./pages/auth/register"
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,9 @@ const App = () => (
             <Route path="/skins" element={<Skins />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/feedback" element={<Feedback />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
