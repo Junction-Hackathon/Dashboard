@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart } from "@mui/x-charts/LineChart";
+import { BarChart } from '@mui/x-charts/BarChart';
 
 const data = [
   { month: "Jan", donations: 65 },
@@ -15,6 +16,8 @@ const data = [
   { month: "Nov", donations: 356 },
   { month: "Dec", donations: 389 },
 ];
+
+
 
 const months = data.map((d) => d.month);
 const donations = data.map((d) => d.donations);
