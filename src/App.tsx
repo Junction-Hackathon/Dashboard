@@ -12,19 +12,19 @@ import Reports from "./pages/Reports";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 import background from "../public/assets/BG.png";
-import Login from "./pages/auth/login"
-import Register from "./pages/auth/register"
+import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-<img
-  className="fixed top-0 left-0 w-full h-full object-cover z-[-1] opacity-20 pointer-events-none"
-  src={background}
-  alt="Background"
-/>
-<div className="fixed top-0 left-0 w-full h-full z-[-1] bg-gradient-to-b from-white via-transparent via-20% pointer-events-none" />
+    <img
+      className="fixed top-0 left-0 w-full h-full object-cover z-[-1] opacity-20 pointer-events-none"
+      src={background}
+      alt="Background"
+    />
+    <div className="fixed top-0 left-0 w-full h-full z-[-1] bg-gradient-to-b from-white via-transparent via-20% pointer-events-none" />
 
     <div className="relative z-200">
       <TooltipProvider>

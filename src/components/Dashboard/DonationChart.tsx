@@ -4,19 +4,18 @@ import { useEffect, useState } from "react";
 
 export const DonationChart = () => {
   const [data, setData] = useState([
-    // fallback dummy data before backend fetch
-    // { month: "Jan", donations: 65 },
-    // { month: "Feb", donations: 89 },
-    // { month: "Mar", donations: 123 },
-    // { month: "Apr", donations: 156 },
-    // { month: "May", donations: 178 },
-    // { month: "Jun", donations: 198 },
-    // { month: "Jul", donations: 234 },
-    // { month: "Aug", donations: 267 },
-    // { month: "Sep", donations: 298 },
-    // { month: "Oct", donations: 321 },
-    // { month: "Nov", donations: 356 },
-    // { month: "Dec", donations: 389 },
+    { month: "Jan", donations: 65 },
+    { month: "Feb", donations: 89 },
+    { month: "Mar", donations: 123 },
+    { month: "Apr", donations: 156 },
+    { month: "May", donations: 178 },
+    { month: "Jun", donations: 198 },
+    { month: "Jul", donations: 234 },
+    { month: "Aug", donations: 267 },
+    { month: "Sep", donations: 298 },
+    { month: "Oct", donations: 321 },
+    { month: "Nov", donations: 356 },
+    { month: "Dec", donations: 389 },
   ]);
 
   const months = data.map((d) => d.month);
