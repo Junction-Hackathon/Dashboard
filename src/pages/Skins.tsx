@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Package, Building, CheckCircle, Clock } from "lucide-react"
+import { Package, Building, CheckCircle, Clock, Edit, Check, Trash2 } from 'lucide-react'
 
 const initialSkins = [
   {
@@ -252,12 +252,18 @@ const Skins = () => {
                           skin.worker
                         )}
                       </TableCell>
-                      <TableCell className="space-x-2">
-                        <Button variant="outline" size="sm" onClick={() => handleEditToggle(skin.id)}>
-                          {isEditing ? "Save" : "Edit"}
-                        </Button>
+                      <TableCell className="flex space-x-2">
+                        {isEditing ? (
+                          <Button size="sm" onClick={() => handleEditToggle(skin.id)}>
+                            <Check className="w-4 h-4" />
+                          </Button>
+                        ) : (
+                          <Button variant="outline" size="sm" onClick={() => handleEditToggle(skin.id)}>
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        )}
                         <Button variant="destructive" size="sm" onClick={() => setConfirmDeleteId(skin.id)}>
-                          Delete
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </TableCell>
                     </TableRow>
