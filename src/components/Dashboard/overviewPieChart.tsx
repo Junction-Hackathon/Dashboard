@@ -1,7 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChart } from "@mui/x-charts/BarChart"
-// import { useEffect, useState } from "react"
-// import axios from "axios"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BarChart } from "@mui/x-charts/BarChart";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import instance from "../../api/api";
 
 const donationData = [
   { month: "Jan", count: 65, amount: 85000 },
@@ -16,21 +17,21 @@ const donationData = [
   { month: "Oct", count: 321, amount: 361400 },
   { month: "Nov", count: 356, amount: 402300 },
   { month: "Dec", count: 389, amount: 432800 },
-]
+];
 
-// const [donationData, setDonationData] = useState([])
+// const [donationData, setDonationData] = useState([]);
 
+const months = donationData.map((d) => d.month);
+const donationCounts = donationData.map((d) => d.count);
+const donationAmounts = donationData.map((d) => d.amount);
 // useEffect(() => {
-//   axios.get("/api/donations/monthly")
+//   axios
+//     .get("https://7878d25ed70e.ngrok-free.app/dashboard/overview-count?year=")
 //     .then((res) => {
-//       setDonationData(res.data)
+//       console.log(res);
 //     })
-//     .catch((err) => console.error("Failed to fetch donation data", err))
-// }, [])
-
-const months = donationData.map((d) => d.month)
-const donationCounts = donationData.map((d) => d.count)
-const donationAmounts = donationData.map((d) => d.amount)
+//     .catch((err) => console.error("Failed to fetch donation data", err));
+// }, []);
 
 export const DashBoardBarChart = () => {
   return (
@@ -66,5 +67,5 @@ export const DashBoardBarChart = () => {
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};

@@ -1,18 +1,16 @@
-import { MetricCard } from "./MetricCard"
-import { useNavigate } from "react-router-dom"
-import {
-  DollarSign,
-  Heart,
-  Users,
-  Shirt,
-  CheckCircle,
-} from "lucide-react"
-import { AnimatedNumber } from "../ui/animatedNumber"
-
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { MetricCard } from "./MetricCard";
+import { useNavigate } from "react-router-dom";
+import { DollarSign, Heart, Users, Shirt, CheckCircle } from "lucide-react";
+import { AnimatedNumber } from "../ui/animatedNumber";
+import instance from "../../api/api";
+import { useEffect, useState } from "react";
 
 export const StatsGrid = () => {
+  useEffect(() => {
+    console.log("debug")
+    instance.get("/dashboard/overview-count")
+  }, []);
+
   const stats = [
     {
       title: "Total Donations",
@@ -20,7 +18,7 @@ export const StatsGrid = () => {
       icon: <DollarSign className="w-4 h-4" />,
       change: { value: 12, type: "increase" as const },
       path: "/donations",
-      key: "donations", 
+      key: "donations",
     },
     {
       title: "Recipients Helped",
@@ -54,9 +52,9 @@ export const StatsGrid = () => {
       path: "/feedback",
       key: "feedbacks",
     },
-  ]
+  ];
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Uncomment heeeeere to fetch from backend
   /*
@@ -80,7 +78,7 @@ export const StatsGrid = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {(stats).map((stat, index) => (
+      {stats.map((stat, index) => (
         <button
           key={stat.title}
           onClick={() => navigate(stat.path)}
@@ -103,5 +101,5 @@ export const StatsGrid = () => {
         </button>
       ))}
     </div>
-  )
-}
+  );
+};

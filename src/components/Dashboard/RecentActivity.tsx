@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect, useState } from "react"; 
-import axios from "axios";
+import { useEffect, useState } from "react";
 
 const staticActivities = [
   {
@@ -53,13 +52,8 @@ const getStatusColor = (status: string) => {
 };
 
 export const RecentActivity = () => {
-  const [activities, setActivities] = useState(staticActivities); 
-
-  // useEffect(() => {
-  //   axios.get("/api/recent-activities") // Replace with your actual API endpoint
-  //     .then((res) => setActivities(res.data))
-  //     .catch((err) => console.error("Failed to fetch recent activities:", err));
-  // }, []);
+  const [activities, setActivities] = useState(staticActivities);
+  const [data, setData] = useState<any>();
 
   return (
     <Card className="shadow-card rounded-3xl">
