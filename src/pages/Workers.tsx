@@ -1,4 +1,5 @@
-import { useState } from "react"
+// import axios from "axios"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -89,7 +90,14 @@ const Workers = () => {
     },
   })
 
-  const onSubmit = (data: WorkerForm) => {
+  // Fetch workers on mount (when backend is ready)
+  useEffect(() => {
+    // axios.get("/api/workers")
+    //   .then(res => setWorkers(res.data))
+    //   .catch(err => console.error("Failed to fetch workers:", err))
+  }, [])
+
+  const onSubmit = async (data: WorkerForm) => {
     const avatar =
       (data.firstName?.[0] || "").toUpperCase() +
       (data.lastName?.[0] || "").toUpperCase()
@@ -101,18 +109,23 @@ const Workers = () => {
 
     setWorkers((prev) => [...prev, newWorker])
     reset()
+
+    // await axios.post("/api/workers", newWorker)
   }
 
-  const handleUpdate = (id: string, field: keyof WorkerForm, value: any) => {
+  const handleUpdate = async (id: string, field: keyof WorkerForm, value: any) => {
     setWorkers((prev) =>
       prev.map((worker) =>
         worker.id === id ? { ...worker, [field]: value } : worker
       )
     )
+
+    // await axios.patch(`/api/workers/${id}`, { [field]: value })
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setWorkers((prev) => prev.filter((w) => w.id !== deleteId))
+    // await axios.delete(`/api/workers/${deleteId}`)
     setDeleteId(null)
   }
 

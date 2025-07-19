@@ -2,15 +2,17 @@
 
 import type React from "react"
 
+import { IoMdLogIn } from "react-icons/io"
 import { useState } from "react"
 import { Button } from "./button"
 import { Input } from "./input"
 import { Label } from "./label"
 import { Checkbox } from "./checkbox"
 import { Link } from "react-router-dom"
-import { Eye, EyeOff, User, Lock, Loader2, Facebook, Twitter, Shield, Heart } from "lucide-react"
+import { Eye, EyeOff, User, Lock, Loader2, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import sheep from "../../../public/assets/sheep.png"
+import { useNavigate } from "react-router-dom"
 
 interface AuthFormProps {
   mode: "login" | "register"
@@ -67,6 +69,10 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000))
       console.log({ mode, formData })
+
+      if (isLogin) {
+        navigate("/home")
+      }
     } catch (error) {
       console.error("Auth error:", error)
     } finally {
@@ -85,6 +91,8 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
     console.log(`Admin login with ${provider}`)
   }
 
+  const navigate = useNavigate()
+
   return (
     <div className="min-h-screen flex">
       <div
@@ -95,24 +103,19 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
           <div className="relative max-w-md text-center">
             {isLogin ? (
               <div className="relative mb-8">
-                <div
-                  className="w-80 h-80 rounded-full flex items-center justify-center mx-auto relative overflow-hidden border-4 border-white/20"
-                  style={{ background: "var(--gradient-primary)" }}
-                >
+                <div className="relative w-80 h-80 mx-auto rounded-2xl overflow-hidden shadow-2xl">
                   <img
                     src={sheep || "/placeholder.svg"}
                     alt="Sheep for Eid al-Adha donations"
-                    className="w-64 h-64 object-cover rounded-full"
-                    style={{ filter: "brightness(1.1) contrast(1.1)" }}
+                    className="w-full h-full object-cover"
+                    style={{ filter: "sepia(5%) saturate(110%) brightness(1.05)" }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-full"></div>
-
-        
-        
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
                 </div>
 
                 <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-accent/20 animate-pulse"></div>
                 <div className="absolute -bottom-6 -left-6 w-6 h-6 rounded-full bg-primary/20 animate-pulse delay-1000"></div>
+                <div className="absolute top-1/2 -left-8 w-4 h-4 rounded-full bg-accent/30 animate-ping delay-500"></div>
               </div>
             ) : (
               <div className="relative mb-8">
@@ -124,8 +127,6 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
                     style={{ filter: "sepia(5%) saturate(110%) brightness(1.05)" }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
-
-          
                 </div>
 
                 <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-accent/20 animate-pulse"></div>
@@ -198,15 +199,7 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
               className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 relative overflow-hidden"
               style={{ background: isLogin ? "var(--gradient-primary)" : "var(--gradient-accent)" }}
             >
-              {isLogin ? (
-                <img
-                  src={sheep || "/placeholder.svg"}
-                  alt="Sheep icon"
-                  className="w-12 h-12 object-cover rounded-full"
-                />
-              ) : (
-                <Shield className="w-8 h-8 text-white" />
-              )}
+              {isLogin ? <IoMdLogIn className="w-8 h-8 text-white" /> : <Shield className="w-8 h-8 text-white" />}
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
             </div>
             <h1 className="text-3xl font-bold text-foreground">
@@ -378,43 +371,6 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
             </Button>
           </form>
 
-          <div className="space-y-4">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="bg-background px-4 text-muted-foreground">
-                  Or {isLogin ? "login" : "register"} with
-                </span>
-              </div>
-            </div>
-
-            <div className="flex justify-center space-x-4">
-              <button
-                type="button"
-                onClick={() => handleSocialLogin("facebook")}
-                className="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center transition-colors"
-              >
-                <Facebook className="h-5 w-5 text-white" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSocialLogin("twitter")}
-                className="w-12 h-12 rounded-full bg-sky-500 hover:bg-sky-600 flex items-center justify-center transition-colors"
-              >
-                <Twitter className="h-5 w-5 text-white" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSocialLogin("google")}
-                className="w-12 h-12 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center transition-colors"
-              >
-                <span className="text-white font-bold text-sm">G</span>
-              </button>
-            </div>
-          </div>
-
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
               {isLogin ? (
@@ -430,10 +386,7 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
               ) : (
                 <>
                   Already have an administrator account?{" "}
-                  <Link
-                    to="/login"
-                    className="font-medium text-primary hover:text-primary/80 transition-colors underline"
-                  >
+                  <Link to="/" className="font-medium text-primary hover:text-primary/80 transition-colors underline">
                     Sign in here
                   </Link>
                 </>

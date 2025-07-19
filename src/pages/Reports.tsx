@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react" 
+import axios from "axios" 
 import { DashboardLayout } from "@/components/Layout/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,6 +11,21 @@ const dummyData = [
   { name: "Fatima Al-Zahra", donation: "$150", region: "Region B", date: "2024-01-15" },
   { name: "Omar Al-Khattab", donation: "$150", region: "Region A", date: "2024-01-14" },
 ]
+
+// Uncomment below when integrating with backend API
+/*
+const [reportData, setReportData] = useState([])
+
+useEffect(() => {
+  axios.get('/api/reports')
+    .then(response => {
+      setReportData(response.data)
+    })
+    .catch(error => {
+      console.error("Error fetching report data:", error)
+    })
+}, [])
+*/
 
 const generateCSV = () => {
   const header = "Name,Donation,Region,Date"

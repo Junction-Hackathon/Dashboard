@@ -31,7 +31,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/home" element={<Index />} />
             <Route path="/donations" element={<Donations />} />
             <Route path="/workers" element={<Workers />} />
             <Route path="/recipients" element={<Recipients />} />
@@ -39,7 +39,7 @@ const App = () => (
             <Route path="/reports" element={<Reports />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

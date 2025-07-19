@@ -1,6 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 import {
   LayoutDashboard,
   DollarSign,
@@ -13,15 +14,22 @@ import {
 import { cn } from "@/lib/utils";
 import background from "../../../public/assets/mosaics.png";
 import { GiSheep } from "react-icons/gi";
-
-const handleLogout = () => {
-  console.log("Logged out");
-};
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 const navigationItems = [
   {
     name: "Dashboard",
-    href: "/",
+    href: "/home",
     icon: LayoutDashboard,
   },
   {
@@ -58,6 +66,7 @@ const navigationItems = [
 
 export const Navigation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed left-0 top-0 z-50 h-screen w-64 bg-card shadow-elegant border-r border-border flex flex-col">
@@ -101,16 +110,33 @@ export const Navigation = () => {
           })}
         </ul>
 
-        {/* Logout button pinned at the bottom */}
+        {/* Pretty logout confirmation */}
         <div className="pt-4 mt-auto">
-          <Button
-            variant="ghost"
-            onClick={handleLogout}
-            className="w-full justify-start text-red-500 hover:text-white hover:bg-gradient-to-r from-red-500 to-pink-500"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-red-500 hover:text-white hover:bg-gradient-to-r from-red-500 to-pink-500"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure you want to logout?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will disconnect your session and return you to the login page.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => navigate("/")}>
+                  Yes, Logout
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 

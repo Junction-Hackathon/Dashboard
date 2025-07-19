@@ -12,7 +12,6 @@ const Dashboard = () => {
       <div className="relative z-0">
         <DashboardLayout>
           <div className="space-y-8">
-            {/* Greeting */}
             <div className="animate-fade-in">
               <h1 className="text-3xl font-bold text-foreground mb-2">
                 Dashboard Overview
@@ -22,10 +21,8 @@ const Dashboard = () => {
               </p>
             </div>
 
-            {/* Stats */}
             <StatsGrid />
 
-            {/* Charts in a row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <DonationChart />
@@ -35,7 +32,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Recent activity */}
             <RecentActivity />
           </div>
         </DashboardLayout>

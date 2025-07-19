@@ -1,8 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect, useState } from "react"; 
+import axios from "axios";
 
-const recentActivities = [
+const staticActivities = [
   {
     id: 1,
     type: "donation",
@@ -12,7 +14,7 @@ const recentActivities = [
     avatar: "AH",
   },
   {
-    id: 1,
+    id: 2,
     type: "donation",
     message: "Ahmad donated for sheep #S-1247",
     time: "2 minutes ago",
@@ -20,14 +22,14 @@ const recentActivities = [
     avatar: "AH",
   },
   {
-    id: 4,
+    id: 3,
     type: "skin",
     message: "Skin donated to local charity",
     time: "2 hours ago",
     status: "completed",
     avatar: "SK",
   },
-   {
+  {
     id: 4,
     type: "skin",
     message: "Skin donated to Nayla charity",
@@ -51,8 +53,16 @@ const getStatusColor = (status: string) => {
 };
 
 export const RecentActivity = () => {
+  const [activities, setActivities] = useState(staticActivities); 
+
+  // useEffect(() => {
+  //   axios.get("/api/recent-activities") // Replace with your actual API endpoint
+  //     .then((res) => setActivities(res.data))
+  //     .catch((err) => console.error("Failed to fetch recent activities:", err));
+  // }, []);
+
   return (
-    <Card className="shadow-card  rounded-3xl">
+    <Card className="shadow-card rounded-3xl">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-foreground">
           Recent Activity
@@ -60,7 +70,7 @@ export const RecentActivity = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {recentActivities.map((activity) => (
+          {activities.map((activity) => (
             <div
               key={activity.id}
               className="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"

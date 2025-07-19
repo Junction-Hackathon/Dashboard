@@ -1,4 +1,5 @@
-import { useState } from "react"
+// import axios from "axios"
+import { useState, useEffect } from "react"
 import { DashboardLayout } from "@/components/Layout/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -68,7 +69,14 @@ const Skins = () => {
   const [editData, setEditData] = useState<any>({})
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
 
-  const handleEditToggle = (id: string) => {
+  // Fetch skins on mount (when backend is ready)
+  useEffect(() => {
+    // axios.get("/api/skins")
+    //   .then(res => setSkins(res.data))
+    //   .catch(err => console.error("Failed to fetch skins:", err))
+  }, [])
+
+  const handleEditToggle = async (id: string) => {
     if (editingId === id) {
       setSkins((prev) =>
         prev.map((skin) =>
@@ -76,6 +84,8 @@ const Skins = () => {
         )
       )
       setEditingId(null)
+
+      // await axios.put(`/api/skins/${id}`, editData)
     } else {
       const skin = skins.find((s) => s.id === id)
       setEditData({ ...skin })
@@ -87,14 +97,18 @@ const Skins = () => {
     setEditData((prev: any) => ({ ...prev, [field]: value }))
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!confirmDeleteId) return
+
     setSkins((prev) => prev.filter((skin) => skin.id !== confirmDeleteId))
+    // await axios.delete(`/api/skins/${confirmDeleteId}`)
+
     setConfirmDeleteId(null)
   }
 
   return (
     <DashboardLayout>
+      {/* --- Header and Summary Cards --- */}
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
@@ -156,6 +170,7 @@ const Skins = () => {
           </Card>
         </div>
 
+        {/* --- Table --- */}
         <Card className="shadow-card">
           <CardHeader>
             <CardTitle>Skin Tracking Records</CardTitle>
@@ -254,6 +269,7 @@ const Skins = () => {
         </Card>
       </div>
 
+      {/* --- Delete Confirmation Dialog --- */}
       <Dialog open={!!confirmDeleteId} onOpenChange={() => setConfirmDeleteId(null)}>
         <DialogContent>
           <DialogHeader>

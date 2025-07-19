@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react" 
 import { DashboardLayout } from "@/components/Layout/DashboardLayout"
 import {
   Card,
@@ -26,6 +26,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import axios from "axios"
 
 const initialDonations = [
   {
@@ -76,6 +77,12 @@ export default function Donations() {
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
   const [editedFields, setEditedFields] = useState<Record<string, string>>({})
 
+  // useEffect(() => {
+  //   axios.get("/api/donations") // Replace with your backend endpoint
+  //     .then((res) => setDonations(res.data))
+  //     .catch((err) => console.error("Failed to fetch donations:", err));
+  // }, []);
+
   const startEdit = (donation: any) => {
     setEditingId(donation.id)
     setEditedFields({ ...donation })
@@ -89,6 +96,10 @@ export default function Donations() {
     )
     setEditingId(null)
     setEditedFields({})
+
+    // axios.put(`/api/donations/${id}`, editedFields)
+    //   .then(() => console.log("Donation updated"))
+    //   .catch((err) => console.error("Failed to update donation:", err));
   }
 
   const handleChange = (field: string, value: string) => {
@@ -98,6 +109,10 @@ export default function Donations() {
   const handleDelete = (id: string) => {
     setDonations((prev) => prev.filter((d) => d.id !== id))
     setConfirmDelete(null)
+
+    // axios.delete(`/api/donations/${id}`)
+    //   .then(() => console.log("Donation deleted"))
+    //   .catch((err) => console.error("Failed to delete donation:", err));
   }
 
   return (

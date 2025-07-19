@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart } from "@mui/x-charts/BarChart"
+// import { useEffect, useState } from "react"
+// import axios from "axios"
 
 const donationData = [
   { month: "Jan", count: 65, amount: 85000 },
@@ -15,6 +17,16 @@ const donationData = [
   { month: "Nov", count: 356, amount: 402300 },
   { month: "Dec", count: 389, amount: 432800 },
 ]
+
+// const [donationData, setDonationData] = useState([])
+
+// useEffect(() => {
+//   axios.get("/api/donations/monthly")
+//     .then((res) => {
+//       setDonationData(res.data)
+//     })
+//     .catch((err) => console.error("Failed to fetch donation data", err))
+// }, [])
 
 const months = donationData.map((d) => d.month)
 const donationCounts = donationData.map((d) => d.count)

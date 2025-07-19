@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState /*, useEffect */ } from "react"
+import axios from "axios" // Required for future API integration
 import { DashboardLayout } from "@/components/Layout/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -51,6 +52,22 @@ const initialFeedback = [
     thumbnail: null,
   },
 ]
+
+// API integration placeholder
+/*
+const [feedbackList, setFeedbackList] = useState([])
+
+useEffect(() => {
+  // TODO: Replace '/api/feedback' with your actual backend route
+  axios.get('/api/feedback')
+    .then(response => {
+      setFeedbackList(response.data)
+    })
+    .catch(error => {
+      console.error("Error fetching feedback:", error)
+    })
+}, [])
+*/
 
 const getStatusColor = (status: string) => {
   switch (status) {
